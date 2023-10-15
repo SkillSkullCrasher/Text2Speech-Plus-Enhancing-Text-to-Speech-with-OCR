@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="countries.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            filter: blur(5px); 
+           background-image: url('https://www.insureon.com/-/media/blog/posts/2021/photo_group-of-employees-working-on-project.png?h=370&iar=0&w=750&rev=3faabd3c0f7c4e11966caaa037fa4fc8');
+           background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
+         
+            z-index: -1;
+            height: 100vh; }
+        body{
+          display: flex;
+            background-size: cover;
+            z-index: -1;
+           
+            justify-content: center;
+           
+        }
+        .content{
+            width: 50%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            /* background-color: blue; */
+            margin-top: 50px;
+            
+           /* text-align: center; */
+        }
+        p{
+            font-size: 45px;
+            margin-top: -3%;
+            
+            color: white;
+            margin-left: 6%;
+        }
+        textarea{
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding: 9px;
+            border-radius: 10px;
+            border: none;
+            resize: none;
+            outline: none;
+            
+            
+
+        }
+        .fl button, .btn,.bn{
+            padding: 10px;
+            padding-left: 4%;
+            padding-right: 4%;
+            background-color: rgb(205, 38, 66);
+            color: white;
+            
+            border-radius: 35px;
+            cursor: pointer;
+        }
+        .file{
+            width: 80%;
+            padding: 0 20px;
+            /* height: 50px; */
+            /* height: 40%; */
+            border: none;
+            outline: none;
+            border-radius: 35px;
+            appearance: none;
+            background-repeat: no-repeat;
+            background-size: 33px;
+            background-position-x:440px ;
+            background-position-y:4px ;
+        }
+        select{
+            
+            width: 80%;
+            padding: 0 20px;
+            /* height: 50px; */
+            /* height: 40%; */
+            border: none;
+            outline: none;
+            border-radius: 35px;
+            appearance: none;
+            background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Ic_arrow_drop_down_36px.svg/1200px-Ic_arrow_drop_down_36px.svg.png);
+            background-repeat: no-repeat;
+            background-size: 33px;
+            background-position-x:440px ;
+            background-position-y:4px ;
+            
+        }
+        textarea::placeholder{
+            margin-top: 10px;
+            
+            /* color: white; */
+        }
+    </style>
+</head>
+<body>
+    <div class="content" style="background-image: url();">
+        <p class="head" style="text-align: center;">
+            Text To Speech Converter
+        </p><br>
+       
+        <span style="padding-left:20px ;margin-bottom:10px ;font-size: 15px;color: white;">Select a file:</span>
+        <input type="file" class="file"><br>
+        <button type="" class="btn" >Extract</button>
+        <h2 class="mssg"></h2>
+        <!-- <form action=""> -->
+            <div style="display: flex; gap: 10%;">
+                <div>
+            <textarea class="from-text" placeholder="write anything here......" name="" id="" cols="50" rows="20" ></textarea>
+            <!-- <button type="d"></button> -->
+            <div style="display: flex;gap: 20px;border: none;" class="fl">
+             <select name="" id="select" class="select"> </select>
+
+            <button style="display: flex;gap: 10px;border: none; " class="b" >
+                <span class="fas fa-play" id="from" style="cursor: pointer;"> Listen
+                    
+                </span>
+                <span class="fas fa-copy"  id="from" > copy</span>
+            </button>
+        </div></div>
+        <div>
+            <textarea class="to-text" placeholder="write anything here......" name="" id="" cols="50" rows="20" ></textarea>
+            <!-- <button type="d"></button> -->
+            <div style="display: flex;gap: 20px;border: none;" class="fl">
+             <select name="" id="select" class="select"> </select>
+
+             <button style="display: flex;gap: 20px;border: none; " class="b" >
+                <span class="fas fa-play"  id="to" > Listen
+                    
+                </span>
+                <span class="fas fa-copy"  id="to" > copy</span>
+            </button>
+        </div></div></div>
+        <!-- <button style="display: flex;gap: 10px;border: none; " class="bn"> <span class="fas fa-play">
+
+        </span><span>Convert</span></button> -->
+        
+        <button type="" class="bn" style="margin-top: 20px;">Extract</button>
+
+        <!-- </form> -->
+    </div>
+    <script>
+        
+
+        const fromText=document.querySelector(".from-text");
+        const toText=document.querySelector(".to-text");
+
+        
+        selectTag=document.querySelectorAll("select");
+        translatebtn=document.querySelector(".bn");
+        vol=document.querySelectorAll(".b");
+        selectTag.forEach((tag,id)=>{
+            for(const country_code in countries){
+                let selected;
+                if(id==0 && country_code=="en-GB"){
+                    selected="selected"
+                }else if(id==1 && country_code=="hi-IN"){
+                    selected="selected"
+                }
+                // console.log(countries[country_code]);
+                let option=`<option value="${country_code}"${selected}>${countries[country_code]}</option>`;
+                tag.insertAdjacentHTML("beforeend",option);
+            }
+        });
+        translatebtn.addEventListener("click",()=>{
+            let text=fromText.value;
+            translateFrom=selectTag[0].value;
+            translateTo=selectTag[1].value;
+            if(!text) return;
+            toText.setAttribute("placeholder","Translating.....");
+            let apiurl=`https://api.mymemory.translated.net/get?q=${text}&langpair=${translateFrom}|${translateTo}`;
+            fetch(apiurl).then(res =>res.json()).then(data=>{
+                console.log(data);
+                toText.value=data.responseData.translatedText;
+                toText.setAttribute("placeholder","Translation");
+            });
+            // console.log(text,translateFrom,translateTo);
+        });
+        vol.forEach(icon =>{
+            icon.addEventListener("click",({target})=>{
+                // console.log(target);
+                if(target.classList.contains("fa-copy")){
+                    if(target.id=="from"){
+                        navigator.clipboard.writeText(fromText.value);
+                    }else{
+                        navigator.clipboard.writeText(toText.value);
+                    }
+                }
+                else{
+                    let utter;
+
+                    if(target.id=="from"){
+                       utter=new SpeechSynthesisUtterance(fromText.value);
+                       utter.lang=selectTag[0].value;
+                    }if(target.id!="from"){
+                        utter=new SpeechSynthesisUtterance(toText.value);
+                        utter.lang=selectTag[1].value;
+                    }
+                    speechSynthesis.speak(utter);
+                }
+            })
+        })
+
+
+
+       //API: interface b/w client and server i.e google maps ko ham directly access nhi kar skta ham usko access krta h jab hama google app API sa permission milti h or vo sirf url share krta h to isliya data secure rahta h kyoki ham directly kisi webpage ko access nhi krta h or ya hmari activities ko bhi track krta h i.e. malicious
+       let api="https://script.google.com/macros/s/AKfycbyPvqikftOmL4JDAg3MsCbEGL9RUHRElBUavskQkV8mLeEoe9bTF9LDuM78aHqJAQU8WQ/exec";
+       let mssg=document.querySelector(".mssg");
+       let file=document.querySelector(".file");
+       let btn=document.querySelector(".btn");
+       let text=document.querySelector(".from-text");
+       
+       btn.addEventListener('click',()=>{
+        mssg.innerHTML=`Loading....`;
+        
+        let fr=new FileReader();
+        fr.readAsDataURL(file.files[0])
+        fr.onload=()=>{
+            let res=fr.result;
+            let b64=res.split("base64,")[1];
+            fetch(api,{
+                //POST method contains URL(web page which client request to server)+request body(contains data) and this request body is in http header so it is hidden only some has access to this so it means it's safe everybody can't open it until and unless they have data of request body i.e. google form: after data submission, data is sent to request body with some URL and the owner can access the data from request body and can perfom operations accordingly. 
+                method:"POST",
+                body:JSON.stringify({
+                    file:b64,
+                    type:file.files[0].type,
+                    name:file.files[0].name,
+                })
+            }).then(res=>res.text())
+            .then(data => {
+                text.innerHTML=data;
+                mssg.innerHTML=``;
+            });
+        }
+       })
+    </script>
+</body>
+</html>
+
+
